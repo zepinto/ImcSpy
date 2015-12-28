@@ -17,7 +17,7 @@
 		</delete>
 
 	    <javac encoding="UTF-8" srcdir="src" destdir="build" includes="**/*.java" 
-	    	fork="false" includeantruntime="false" >
+	    	fork="false" includeantruntime="false" source="1.6" target="1.6" >
 	      <classpath refid="classpath.base"/>
 	    </javac>
 	</target>
@@ -27,7 +27,7 @@
 		<copy todir="build">
 			<fileset dir="src" includes="**/*.so"/>
 		</copy>
-		<jar destfile="ImcSpy.jar" basedir="build">
+		<jar destfile="ImcSpy.jar" basedir="build" >
 		  <manifest>
 		  	<attribute name="Main-Class" value="info.zepinto.ImcSpy"/>
           </manifest>
