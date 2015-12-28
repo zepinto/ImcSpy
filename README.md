@@ -11,7 +11,8 @@ ImcSpy helps users capture the IMC data flowing in the local network by using li
 
 # Compilation
 In the folder where you cloned this project run:
-'''ant'''
-
+```
+ant
+```
 # Usage
   
