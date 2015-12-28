@@ -1,0 +1,36 @@
+<project name="ImcSpy" default="one-jar">
+	<path id="classpath.dependencies">
+		<pathelement location="lib/libimc.jar" />
+		<pathelement location="lib/jpcap.jar" />
+	</path>
+	<path id="classpath.base">
+	  	<path refid="classpath.dependencies" />
+	  	<pathelement location="build" />  	
+	</path>
+	
+	<target name="compile">
+		<mkdir dir="build"/>
+		<delete>
+			<fileset dir="build">
+	    		<include name="*.*"/>	    
+			</fileset>
+		</delete>
+
+	    <javac encoding="UTF-8" srcdir="src" destdir="build" includes="**/*.java" 
+	    	fork="false" includeantruntime="false" >
+	      <classpath refid="classpath.base"/>
+	    </javac>
+	</target>
+	
+	<target name="one-jar" depends="compile">
+		<unjar src="lib/libimc.jar" dest="build"/>
+		<copy todir="build">
+			<fileset dir="src" includes="**/*.so"/>
+		</copy>
+		<jar destfile="ImcSpy.jar" basedir="build">
+		  <manifest>
+		  	<attribute name="Main-Class" value="info.zepinto.ImcSpy"/>
+          </manifest>
+		</jar>
+	</target>
+</project>
