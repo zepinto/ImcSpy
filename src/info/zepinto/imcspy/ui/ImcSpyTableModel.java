@@ -12,7 +12,7 @@ public class ImcSpyTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -7738636090730683253L;
 	private ArrayList<CapturedMessage> messages = new ArrayList<>();
-	private SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd hh:mm:ss.SSS");
+	private SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
 	{
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
