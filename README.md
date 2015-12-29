@@ -5,7 +5,7 @@ Utility application for monitoring IMC communications
 ImcSpy helps users capture the IMC data flowing in the local network by using libpcap library.
 
 # Requirements
-  - Java 1.6+
+  - Java 1.8+
   - libpcap
   - Apache ant (for compilation)
 
