@@ -17,5 +17,6 @@ ant
 # Usage
 Notice that your system may require super-user previledges to start capturing network data.
 ```
-sudo java -jar ImcSpy.jar <interfaces to listen>
+sudo java -jar ImcSpy.jar [options] <interfaces to listen>?
 ```
+
