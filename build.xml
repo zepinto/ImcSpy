@@ -17,7 +17,7 @@
 		</delete>
 
 	    <javac encoding="UTF-8" srcdir="src" destdir="build" includes="**/*.java" 
-	    	fork="false" includeantruntime="false" source="1.6" target="1.6" >
+	    	fork="false" includeantruntime="false" >
 	      <classpath refid="classpath.base"/>
 	    </javac>
 	</target>
