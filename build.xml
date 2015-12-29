@@ -26,6 +26,7 @@
 		<unjar src="lib/libimc.jar" dest="build"/>
 		<copy todir="build">
 			<fileset dir="src" includes="**/*.so"/>
+			<fileset dir="src" includes="**/*.png"/>
 		</copy>
 		<jar destfile="ImcSpy.jar" basedir="build" >
 		  <manifest>

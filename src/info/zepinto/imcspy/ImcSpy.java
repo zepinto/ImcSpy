@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.AbstractAction;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -103,7 +104,7 @@ public class ImcSpy {
 				for (AbstractAction act : spyApp.getFileActions())
 					file.add(new JMenuItem(act));
 				menubar.add(file);
-				
+				frame.setIconImage(new ImageIcon(spyApp.getClass().getClassLoader().getResource("info/zepinto/imcspy/ui/eye.png")).getImage());
 				frame.setSize(800, 600);
 				frame.setVisible(true);
 			}

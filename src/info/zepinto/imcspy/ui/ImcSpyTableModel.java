@@ -11,6 +11,7 @@ import info.zepinto.imcspy.CapturedMessage;
 public class ImcSpyTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -7738636090730683253L;
+	private static final int MAX_MESSAGES = 100000;
 	private ArrayList<CapturedMessage> messages = new ArrayList<>();
 	private SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss.SSS");
 	{
@@ -51,9 +52,14 @@ public class ImcSpyTableModel extends AbstractTableModel {
 	
 	public void addMessage(CapturedMessage msg) {
 		synchronized (messages) {
-			messages.add(msg);	
+			if (messages.size() >= MAX_MESSAGES) {
+				messages.remove(0);
+				fireTableRowsDeleted(0, 1);
+			}
+			messages.add(msg);
+			fireTableRowsInserted(messages.size()-1, messages.size());
 		}
-		fireTableRowsInserted(messages.size()-1, messages.size());
+		
 	}
 	
 	public void clear() {

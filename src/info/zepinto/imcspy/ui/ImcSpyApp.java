@@ -41,6 +41,7 @@ import jpcap.JpcapCaptor;
 import jpcap.NetworkInterface;
 import pt.lsts.imc.IMCMessage;
 import pt.lsts.imc.IMCUtil;
+import pt.lsts.imc.lsf.LsfMessageLogger;
 
 public class ImcSpyApp extends JPanel implements CapturedMessageHandler{
 	private static final long serialVersionUID = 6663249963843784261L;
@@ -161,6 +162,7 @@ public class ImcSpyApp extends JPanel implements CapturedMessageHandler{
 	@Override
 	public void captured(CapturedMessage message) {
 		model.addMessage(message);
+		LsfMessageLogger.log(message.getMessage());
 	}
 	
 	class ActionStartCapture extends AbstractAction {
