@@ -29,7 +29,7 @@
 		</copy>
 		<jar destfile="ImcSpy.jar" basedir="build" >
 		  <manifest>
-		  	<attribute name="Main-Class" value="info.zepinto.ImcSpy"/>
+		  	<attribute name="Main-Class" value="info.zepinto.imcspy.ImcSpy"/>
           </manifest>
 		</jar>
 	</target>

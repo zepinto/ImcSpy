@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package info.zepinto;
+package info.zepinto.util;
  
 import java.io.File;
 import java.io.FileNotFoundException;
