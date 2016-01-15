@@ -33,12 +33,14 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableRowSorter;
 
 import info.zepinto.imcspy.CapturedMessage;
 import info.zepinto.imcspy.CapturedMessageHandler;
 import info.zepinto.imcspy.ImcSpy;
 import jpcap.JpcapCaptor;
 import jpcap.NetworkInterface;
+import pt.lsts.imc.IMCDefinition;
 import pt.lsts.imc.IMCMessage;
 import pt.lsts.imc.IMCUtil;
 import pt.lsts.imc.lsf.LsfMessageLogger;
@@ -46,7 +48,14 @@ import pt.lsts.imc.lsf.LsfMessageLogger;
 public class ImcSpyApp extends JPanel implements CapturedMessageHandler{
 	private static final long serialVersionUID = 6663249963843784261L;
 	private ImcSpyTableModel model = new ImcSpyTableModel();
+	private TableRowSorter<ImcSpyTableModel> sorter = new TableRowSorter<ImcSpyTableModel>(model);
+	private MessageFilter filter = new MessageFilter();
+	
 	private JTable table = new JTable(model);
+	{
+		sorter.setRowFilter(filter);
+		table.setRowSorter(sorter);		
+	}	
 	private JEditorPane editor = new JEditorPane();
 	
 	ArrayList<String> selectedDevices = new ArrayList<String>();
@@ -65,7 +74,8 @@ public class ImcSpyApp extends JPanel implements CapturedMessageHandler{
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
 				try {
-					IMCMessage msg = model.get(table.getSelectedRow()).getMessage();
+					int index = table.convertRowIndexToModel(table.getSelectedRow());
+					IMCMessage msg = model.get(index).getMessage();
 					editor.setText(IMCUtil.getAsHtml(msg));
 					editor.setCaretPosition(0);			
 				}
@@ -79,7 +89,8 @@ public class ImcSpyApp extends JPanel implements CapturedMessageHandler{
 			public void mouseClicked(MouseEvent e) {
 				if (SwingUtilities.isRightMouseButton(e)) {
 					try {
-						final IMCMessage msg = model.get(table.getSelectedRow()).getMessage();
+						int index = table.convertRowIndexToModel(table.getSelectedRow());
+						final IMCMessage msg = model.get(index).getMessage();
 						JPopupMenu popup = new JPopupMenu();
 						popup.add("Copy to clipboard as XML").addActionListener(new ActionListener() {
 							@Override
@@ -105,8 +116,7 @@ public class ImcSpyApp extends JPanel implements CapturedMessageHandler{
 					}
 					catch (Exception ex) {
 						ex.printStackTrace();
-					}
-					
+					}					
 				}
 			}
 		});
@@ -116,6 +126,8 @@ public class ImcSpyApp extends JPanel implements CapturedMessageHandler{
 		
 		if (!this.selectedDevices.isEmpty())
 			startCapture();
+		
+		
 	}
 	
 	private boolean selectDevices() throws Exception {
@@ -211,9 +223,35 @@ public class ImcSpyApp extends JPanel implements CapturedMessageHandler{
 		}
 	}
 	
+	class ActionAllowedMessages extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+		{	
+			putValue(NAME, "Filter by message type"); 	
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			LinkedHashMap<String, Boolean> options = new LinkedHashMap<>();
+			IMCDefinition.getInstance().getMessageNames().forEach(m -> options.put(m, false));
+			filter.getAllowedMessages().forEach(m -> options.put(m, true));
+			
+			String[] messages = CheckboxList.selectOptions(ImcSpyApp.this, "Messages to show",
+					options);
+			
+			if (messages == null)
+				return;
+			
+			filter.setAllowedMessages(messages);			
+		}
+	}
+	
 	public List<AbstractAction> getFileActions() {
 		return Arrays.asList(new ActionStartCapture(), new ActionClear());
 	}
+	
+	public List<AbstractAction> getOptionsActions() {
+		return Arrays.asList(new ActionAllowedMessages());
+	}	
 	
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("IMC Spy");
@@ -227,6 +265,11 @@ public class ImcSpyApp extends JPanel implements CapturedMessageHandler{
 		for (AbstractAction act : spyApp.getFileActions())
 			file.add(new JMenuItem(act));
 		menubar.add(file);
+		System.out.println("Add options!");
+		JMenu options = new JMenu("Options");
+		for (AbstractAction act : spyApp.getOptionsActions())
+			options.add(new JMenuItem(act));
+		menubar.add(options);
 		
 		frame.setSize(800, 600);
 		frame.setVisible(true);

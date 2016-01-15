@@ -17,7 +17,7 @@ public class ImcSpyTableModel extends AbstractTableModel {
 	{
 		sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
 	}
-	private static final int IDX_TIMESTAMP = 0,
+	public static final int IDX_TIMESTAMP = 0,
 			IDX_DEVICE = 1,
 			IDX_SENDER = 2,
 			IDX_RECEIVER = 3,
@@ -57,7 +57,7 @@ public class ImcSpyTableModel extends AbstractTableModel {
 				fireTableRowsDeleted(0, 1);
 			}
 			messages.add(msg);
-			fireTableRowsInserted(messages.size()-1, messages.size());
+			fireTableRowsInserted(messages.size()-1, messages.size()-1);
 		}
 		
 	}
@@ -66,7 +66,7 @@ public class ImcSpyTableModel extends AbstractTableModel {
 		synchronized (messages) {
 			messages.clear();				
 		}
-		fireTableRowsDeleted(0, messages.size());
+		fireTableRowsDeleted(0, messages.size()-1);
 	}
 
 	
@@ -82,8 +82,8 @@ public class ImcSpyTableModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		
 		CapturedMessage msg;
+		
 		synchronized (messages) {
 			if (rowIndex < 0 || rowIndex >= messages.size())
 				return null;
