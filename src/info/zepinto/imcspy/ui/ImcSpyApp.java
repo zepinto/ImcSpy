@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractAction;
 import javax.swing.JCheckBox;
 import javax.swing.JEditorPane;
@@ -31,6 +32,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
@@ -53,7 +55,7 @@ public class ImcSpyApp extends JPanel implements CapturedMessageHandler{
 	
 	private JTable table = new JTable(model);
 	{
-		sorter.setRowFilter(filter);
+	//	sorter.setRowFilter(filter);
 		table.setRowSorter(sorter);		
 	}	
 	private JEditorPane editor = new JEditorPane();
@@ -254,18 +256,31 @@ public class ImcSpyApp extends JPanel implements CapturedMessageHandler{
 	}	
 	
 	public static void main(String[] args) {
+		
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		JFrame frame = new JFrame("IMC Spy");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		ImcSpyApp spyApp = new ImcSpyApp();
 		frame.getContentPane().add(spyApp);
 		JMenuBar menubar = new JMenuBar();
 		frame.setJMenuBar(menubar);
-		
+		try {
+			frame.setIconImage(ImageIO.read(ImcSpyApp.class.getClassLoader().getResourceAsStream("info/zepinto/imcspy/ui/eye.png")));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
 		JMenu file = new JMenu("File");
 		for (AbstractAction act : spyApp.getFileActions())
 			file.add(new JMenuItem(act));
 		menubar.add(file);
-		System.out.println("Add options!");
+		
 		JMenu options = new JMenu("Options");
 		for (AbstractAction act : spyApp.getOptionsActions())
 			options.add(new JMenuItem(act));

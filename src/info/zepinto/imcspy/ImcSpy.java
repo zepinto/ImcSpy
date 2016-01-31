@@ -5,13 +5,6 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.swing.AbstractAction;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-
 import info.zepinto.imcspy.ui.ImcSpyApp;
 import info.zepinto.util.NativeUtils;
 import jpcap.JpcapCaptor;
@@ -92,25 +85,8 @@ public class ImcSpy {
 			return;
 		}
 		else {
-			if (args[0].equals("-gui")) {
-				ImcSpyApp spyApp = new ImcSpyApp(Arrays.asList(args).subList(1, args.length));
-				JFrame frame = new JFrame("IMC Spy");
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.getContentPane().add(spyApp);
-				JMenuBar menubar = new JMenuBar();
-				frame.setJMenuBar(menubar);
-				
-				JMenu file = new JMenu("File");
-				for (AbstractAction act : spyApp.getFileActions())
-					file.add(new JMenuItem(act));
-				menubar.add(file);
-				frame.setIconImage(new ImageIcon(spyApp.getClass().getClassLoader().getResource("info/zepinto/imcspy/ui/eye.png")).getImage());
-				frame.setSize(800, 600);
-				frame.setVisible(true);
-			}
-			else {
-				new ImcSpy(args);
-			}
+			if (args[0].equals("-gui"))
+				ImcSpyApp.main(Arrays.asList(args).subList(1, args.length).toArray(new String[0]));
 		}
 	}
 

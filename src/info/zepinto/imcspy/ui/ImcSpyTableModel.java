@@ -64,15 +64,18 @@ public class ImcSpyTableModel extends AbstractTableModel {
 	
 	public void clear() {
 		synchronized (messages) {
+			if (messages.size() > 0)
+				fireTableRowsDeleted(0, messages.size()-1);
 			messages.clear();				
 		}
-		fireTableRowsDeleted(0, messages.size()-1);
 	}
 
 	
 	@Override
 	public int getRowCount() {
-		return messages.size();
+		synchronized (messages) {
+			return messages.size();
+		}
 	}
 
 	@Override
